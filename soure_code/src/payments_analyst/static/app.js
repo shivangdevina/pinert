@@ -2,6 +2,7 @@ import {escapeHTML as e,money,number,currentWindow,toPaise,segmentLabel} from '.
 import {rankingChart,simulationChart} from './charts.js';
 import {consumeAnalysisStream} from './analysis-stream.js';
 import {AuthClient} from './auth-client.js';
+import {apiUrl} from './api-url.js';
 
 const $=id=>document.getElementById(id);
 let auth=null,config=null,profile=null;
@@ -13,7 +14,7 @@ const label=key=>labels[key]||key.replace(/_paise$/,' (INR)').replace(/_pct$/,' 
 const format=(key,value)=>value==null?'—':key.endsWith('_paise')?money(value):key.endsWith('_pct')&&Number.isFinite(value)?`${value.toFixed(2)}%`:typeof value==='number'?number(value):String(value);
 async function api(path,{body,signal}={}){
   const sessionGeneration=auth?.generation;
-  const response=await fetch(path,{method:body?'POST':'GET',headers:{...authHeaders(),...(body?{'Content-Type':'application/json'}:{})},body:body?JSON.stringify(body):undefined,signal});
+  const response=await fetch(apiUrl(path),{method:body?'POST':'GET',headers:{...authHeaders(),...(body?{'Content-Type':'application/json'}:{})},body:body?JSON.stringify(body):undefined,signal});
   let data;try{data=await response.json();}catch{throw new Error('The server returned an unreadable response.');}
   if(sessionGeneration!==auth?.generation)throw new Error('Your access changed. Please try again.');
   if(response.status===401&&auth?.session){auth.clear();lockWorkspace('Your session expired. Sign in again.');}
@@ -63,7 +64,7 @@ function renderAnalysisSteps(target,steps,queries=[],pending=false){
   target.open=opened;
 }
 async function chatApi(body,{signal,onStep}){
-  const response=await fetch('/chat/stream',{method:'POST',headers:{'Content-Type':'application/json',...authHeaders()},body:JSON.stringify(body),signal});
+  const response=await fetch(apiUrl('/chat/stream'),{method:'POST',headers:{'Content-Type':'application/json',...authHeaders()},body:JSON.stringify(body),signal});
   if(!response.ok){let data;try{data=await response.json();}catch{}throw new Error(typeof data?.detail==='string'?data.detail:'The analysis request could not be processed.');}
   return consumeAnalysisStream(response.body,onStep);
 }

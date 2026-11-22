@@ -481,3 +481,7 @@ Money and dates retain exact Decimal/date types in cached calculation inputs. `A
 Verification covers the REST request/expiry format, exact date/money roundtrips, malformed/stale/oversize values, provider failures and fallback, authorization before cache access, user/role/merchant/filter/customer-scope/version separation, live reconciliation on aggregate hits and honest cached-query evidence. Upstash live connectivity remains unverified until the new database credentials are configured.
 
 Official protocol reference: https://upstash.com/docs/redis/features/restapi
+
+## Deployment preparation
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for the Vercel frontend and Render backend setup. The deployment configuration is prepared locally; it does not create hosting services or push changes to GitHub. The existing single-address local app remains supported.

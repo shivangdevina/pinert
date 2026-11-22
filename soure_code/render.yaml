@@ -1,0 +1,37 @@
+# Blueprint path: soure_code/render.yaml. This file provisions only the backend.
+services:
+  - type: web
+    name: payscope-api
+    runtime: python
+    plan: free
+    region: singapore
+    rootDir: soure_code
+    buildCommand: pip install -r requirements.lock.txt && pip install --no-deps .
+    startCommand: python -m uvicorn payments_analyst.api:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    autoDeployTrigger: "off"
+    envVars:
+      - key: DATA_ACCESS_MODE
+        value: public_demo
+      - key: ENABLE_SYNTHETIC_PREVIEW
+        value: "false"
+      - key: PLANNER_MODE
+        value: gemini
+      - key: FRONTEND_ORIGINS
+        value: ""
+      - key: SUPABASE_RUNTIME_DB_URL
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        sync: false
+      - key: UPSTASH_CACHE_ENABLED
+        value: "true"
+      - key: UPSTASH_REDIS_REST_URL
+        sync: false
+      - key: UPSTASH_REDIS_REST_TOKEN
+        sync: false
+      - key: UPSTASH_CACHE_TTL_SECONDS
+        value: "120"
+      - key: UPSTASH_CACHE_NAMESPACE
+        value: payscope:render

@@ -12,6 +12,7 @@ from fastapi.staticfiles import StaticFiles
 
 from .access import access_mode, research_identity, customer_scope
 from .cache import get_cache
+from .cors import configure_cors
 from .auth import bearer, require_user
 from .analytics import analyse, scenario_from_analysis
 from .contracts import (AnalysisBlocked, AnalysisRequest, BackendUnavailable,
@@ -28,6 +29,7 @@ from .next_actions import (NextActionsWorkflow, NextActionRequest, ActionSimulat
 
 app = FastAPI(title="Payment Business Analyst", version="0.3.0",
               description="Supabase-only, evidence-backed structured analysis. All demo data is synthetic.")
+configure_cors(app)
 STATIC_PATH = Path(__file__).with_name("static")
 app.include_router(preview_router)
 

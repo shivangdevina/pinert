@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test tests/view-model.test.mjs tests/analysis-stream.test.mjs",
-    "check": "node --check src/payments_analyst/static/analysis-stream.js && node --check src/payments_analyst/static/app.js && node --check src/payments_analyst/static/charts.js && node --check src/payments_analyst/static/auth-client.js"
+    "test": "node --test tests/*.test.mjs",
+    "check": "node --check src/payments_analyst/static/analysis-stream.js && node --check src/payments_analyst/static/app.js && node --check src/payments_analyst/static/charts.js && node --check src/payments_analyst/static/auth-client.js && node --check src/payments_analyst/static/api-url.js && node --check scripts/build-frontend.mjs",
+    "build": "node scripts/build-frontend.mjs"
   }
 }
